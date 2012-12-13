@@ -1,0 +1,16 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <p:ajaxStatus style="width:32px;height:32px;float:right;">  
+	    <f:facet name="start">  
+	        <h:graphicImage value="/images/ajax-loader_2.gif"/>  
+	    </f:facet>
+	    <f:facet name="complete">  
+	        <h:outputText value="" />  
+	    </f:facet>  
+	</p:ajaxStatus>
+</ui:composition>

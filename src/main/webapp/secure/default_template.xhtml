@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insert title here</title>
+	<h:outputStylesheet library="css" name="styles.css"  />
+</h:head>
+<h:body>
+<p:layout fullPage="true" >
+    <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false">
+    	<p:toolbar>  
+		    <p:toolbarGroup align="left">  
+		        <p:panelGrid columns="7">
+		    		<h:link value="Inicio" outcome="index.do" rendered="#{p:ifGranted('ROLE_CLIENT')}"/>
+		    		<h:link value="Mi cuenta" outcome="myaccount.do" rendered="#{p:ifGranted('ROLE_CLIENT')}"/>
+		    		<h:link value="Usuarios" outcome="users.do" rendered="#{p:ifGranted('ROLE_ADMIN')}"/>
+		    		<h:link value="Productos" outcome="products.do" rendered="#{p:ifGranted('ROLE_ADMIN')}"/>
+		    		<h:link value="Compras" outcome="purchase.do" rendered="#{p:ifGranted('ROLE_ADMIN')}"/>
+		    		<h:link value="Balance" outcome="balance.do" rendered="#{p:ifGranted('ROLE_ADMIN')}"/>
+		    	</p:panelGrid> 
+		    </p:toolbarGroup>  
+		  	
+		    <p:toolbarGroup align="right">
+		    	<p:panelGrid columns="3">
+		    		<ui:define name="currentPrincipal">#{p:userPrincipal()}</ui:define>
+		    		<h:outputText value="Hola #{currentClient.firstName} #{currentClient.lastName}"/>
+		    		<ui:include src="/secure/include/ajaxStatus.xhtml"/>
+		    		<a href="/j_spring_security_logout">Salir</a>
+		    	</p:panelGrid>
+		  	</p:toolbarGroup>
+		</p:toolbar>  
+    </p:layoutUnit>
+
+    <p:layoutUnit position="south" size="70" resizable="false" closable="false" collapsible="false">
+        <h:outputText value="Este será el footer"/>
+    </p:layoutUnit>   
+    <p:layoutUnit position="center">
+    	<ui:insert name="content"> -- Acá va el contenido del template -- </ui:insert>   
+    </p:layoutUnit>
+</p:layout>	
+</h:body>
+</html>

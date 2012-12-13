@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</h:head>
+<h:body>
+	<ui:composition template="default_template.xhtml">
+		<ui:define name="content">
+			<div align="center" style="margin-bottom: 20px;">
+				<h:outputText value="Saldo Actual: $ "/>
+				<h:outputText value="#{currentClient.credit}" style="#{currentClient.credit > 0 ? 'color:green;' : 'color:red;' }">
+					<f:convertNumber currencySymbol="$"/>
+				</h:outputText>
+			</div>
+			<div align="center">
+				<p:dataTable var="item" value="#{myAccountBean.items}" style="width:700px;" paginator="true" rows="15" paginatorPosition="bottom">
+					<f:facet name="header">
+						<h:outputText value="Productos consumidos en el mes"/>
+					</f:facet>
+					<p:column width="150">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Compra"/>
+						</f:facet>
+						#{item.order.orderDate}
+					</p:column>
+					<p:column width="450">
+						<f:facet name="header">
+							<h:outputText value="Producto"/>
+						</f:facet>
+						#{item.product.name}
+					</p:column>
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="Cantidad"/>
+						</f:facet>
+						#{item.amount}
+					</p:column>
+				</p:dataTable>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

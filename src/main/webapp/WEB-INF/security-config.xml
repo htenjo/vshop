@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:security="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<security:http access-denied-page="/accessDenied.xhtml">
+		<!-- Permite la configuración para el manejo de los eventos de la sesion -->		
+		<security:session-management invalid-session-url="/login.jsp?exit=2">
+			<security:concurrency-control expired-url="/login.jsp?exit=1"
+				session-registry-ref="sessionRegistry" error-if-maximum-exceeded="false" max-sessions="1"/>
+		</security:session-management>
+			
+		<!-- Se configuran las url relacionadas con el form login -->
+		<security:form-login login-page="/login.jsp"
+			authentication-failure-url="/login.jsp"			
+			authentication-success-handler-ref="autenticationSuccessHandler"/>
+		<security:logout logout-success-url="/login.jsp?exit=0"/>
+		 
+		<!-- Mapeo de todas las url que se mantienen registradas en el entorno de seguridad -->
+		<security:intercept-url pattern="/secure/index.*" access="ROLE_ADMIN, ROLE_CLIENT"/>
+		<security:intercept-url pattern="/secure/myaccount.*" access="ROLE_ADMIN, ROLE_CLIENT"/>
+		<security:intercept-url pattern="/secure/users.*" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/secure/products.*" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/secure/purchase.*" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/secure/balance.*" access="ROLE_ADMIN"/>
+	</security:http>
+	
+	<!-- Filtro que procesa el submit del formulario de login -->
+	<bean id="processingFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>		
+	</bean>
+	
+	<!--Authentication manager que permite el acceso a datos de autenticacion-->	
+	<security:authentication-manager alias="authenticationManager">			
+		<security:authentication-provider ref="vShopAuthProvider"/>
+	</security:authentication-manager>
+	
+	<!-- Bean que provee del servicio de login personalizado -->
+    <bean id="vShopAuthProvider" class="com.zero.vshop.security.VShopAuthenticationProvider"/>
+	
+	<!-- Bean que gestiona las acciones a realizar en caso de una autenticacion exitosa -->
+    <bean id="autenticationSuccessHandler" class="com.zero.vshop.security.VShopAuthenticationSuccessHandler">		
+		<property name="defaultTargetUrl" value="/index.html"></property>
+		<property name="alwaysUseDefaultTargetUrl" value="true"></property>
+	</bean>
+	
+	<!-- Mantiene registrada la sesion en el contexto de spring para determinar eventos como la terminacion por timeout-->
+	<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />		
+</beans>
