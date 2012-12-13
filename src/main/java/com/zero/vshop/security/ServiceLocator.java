@@ -25,7 +25,7 @@ public class ServiceLocator {
 		if(service == null){
 			try{
 				Context context = new InitialContext();
-				service = (VShopServiceFacade)context.lookup("java:global/TiendaVirtual/VShopServiceFacade");
+				service = (VShopServiceFacade)context.lookup("java:global/VShop/VShopServiceFacade");
 			}catch(NamingException e){
 				//TODO: Aca debe agregarse la gestión de logs respectiva
 				e.printStackTrace();
